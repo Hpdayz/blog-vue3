@@ -27,5 +27,5 @@ export default defineConfig({
     },
   },
   // 配置项目基路径
-  base: '/Hpday'
+  // base: '/Hpday'
 })
