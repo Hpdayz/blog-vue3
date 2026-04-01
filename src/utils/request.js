@@ -28,8 +28,8 @@ instance.interceptors.response.use(
     if (res.data.code === 0) {
       return res
     }
-    ElMessage.error(res.data.message)
-    return Promise.reject(res.data)
+    // ElMessage.error(res.data.message)
+    return Promise.reject(res)
   },
   (err) => {
     if (err.response?.status === 401) {
