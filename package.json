@@ -13,6 +13,7 @@
     "format": "prettier --write --experimental-cli src/"
   },
   "dependencies": {
+    "axios": "^1.11.0",
     "element-plus": "^2.13.6",
     "pinia": "^3.0.4",
     "sass": "^1.98.0",
