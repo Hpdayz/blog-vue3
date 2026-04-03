@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useUserStore } from '@/stores'
-import { createRouter } from 'vue-router'
+import router from '@/router/index'
 import { ElMessage } from 'element-plus'
 // 1. 项目基地址
 const baseURL = 'http://big-event-vue-api-t.itheima.net'
@@ -33,7 +33,6 @@ instance.interceptors.response.use(
   },
   (err) => {
     if (err.response?.status === 401) {
-      const router = createRouter()
       router.push('/login')
     }
     ElMessage.error(err.response?.data?.message || '服务异常')

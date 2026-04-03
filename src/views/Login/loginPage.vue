@@ -45,19 +45,19 @@ const rules = {
 }
 const form = ref()
 const register = async () => {
-  let res = {}
+  // let res = {}
   try {
     await form.value.validate()
-    res = await userRegisterApi(formData.value)
-    console.log(res.data)
+    await userRegisterApi(formData.value)
+    // console.log(res.data)
     ElMessage.success('注册成功')
   }
   catch(err) {
-    console.log("注册失败",err)
+    // console.log("注册失败",err)
     ElMessage.error(err.data?.message || '注册失败')
   }
   finally {
-    console.log(res)
+    // console.log(res)
   }
 }
 
@@ -67,13 +67,13 @@ const login = async () => {
   try{
     await form.value.validate()
     const res = await userLoginApi(formData.value)
-    console.log(res.data.token)
+    // console.log(res.data.token)
     userStore.setToken(res.data.token)
     ElMessage.success('登录成功')
     router.push('/')
   }
   catch(err) {
-    console.log(err)
+    // console.log(err)
     ElMessage.error(err.data?.message || '登录失败')
   }
 

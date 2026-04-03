@@ -1,3 +1,4 @@
+import { useUserStore } from '@/stores'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -35,6 +36,14 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+router.beforeEach((to, from) => {
+  const userStore = useUserStore()
+  if (!userStore.token && to.path !== '/login') return '/login'
+  // 1.  token 不是后端返回的 Bearer 类型，随意修改一下也能访问，怎么避免？
+  // 回答： 每个受保护的接口都需要校验token，不合法就返回401/403，前端即使被篡改，也不能绕过后端校验
+  return true
 })
 
 export default router
