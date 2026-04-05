@@ -11,6 +11,7 @@ const login = async () => {
   const res = await userLoginApi(userData.value)
   console.log(res)
 }
+
 </script>
 
 <template>
@@ -18,4 +19,6 @@ const login = async () => {
   <button @click="useUserStore().setToken('Hello World')">修改Token</button>
   <button @click="useUserStore().removeToken()">清除Token</button>
   <button @click="login()">登录测试</button>
+  <p>{{ useUserStore().userInfo }}</p>
+  <button @click="useUserStore().getUserInfo()">获取用户信息测试</button>
 </template>

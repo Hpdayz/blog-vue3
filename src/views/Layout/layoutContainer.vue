@@ -10,6 +10,19 @@ import {
   CaretBottom
 } from '@element-plus/icons-vue'
 import avatar from '@/assets/default.png'
+import { useUserStore } from '@/stores'
+import router from '@/router'
+// import { useRouter } from 'vue-router'
+const userStore = useUserStore()
+userStore.getUserInfo()
+// 下拉框的点击事件以及退出功能
+const handleCommand = (key) => {
+  if (key === 'logout') {
+    //退出操作
+  } else {
+    router.push(`/user/${key}`)
+  }
+}
 </script>
 
 <template>
@@ -53,10 +66,14 @@ import avatar from '@/assets/default.png'
     </el-aside>
     <el-container>
       <el-header>
-        <div>黑马程序员：<strong>小帅鹏</strong></div>
-        <el-dropdown placement="bottom-end">
+        <div>
+          程序员：<strong>{{
+            userStore.userInfo.nickname || userStore.userInfo.username
+          }}</strong>
+        </div>
+        <el-dropdown placement="bottom-end" @command="handleCommand">
           <span class="el-dropdown__box">
-            <el-avatar :src="avatar" />
+            <el-avatar :src="userStore.userInfo.user_pic || avatar" />
             <el-icon><CaretBottom /></el-icon>
           </span>
           <template #dropdown>
