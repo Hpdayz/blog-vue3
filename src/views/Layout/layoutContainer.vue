@@ -12,13 +12,29 @@ import {
 import avatar from '@/assets/default.png'
 import { useUserStore } from '@/stores'
 import router from '@/router'
+import { ElMessage, ElMessageBox } from 'element-plus'
 // import { useRouter } from 'vue-router'
 const userStore = useUserStore()
 userStore.getUserInfo()
 // 下拉框的点击事件以及退出功能
-const handleCommand = (key) => {
+const handleCommand =async (key) => {
   if (key === 'logout') {
     //退出操作
+    try{ 
+      await ElMessageBox.confirm('你确定要退出吗？','提示', {
+      type: 'warning',
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      })
+      userStore.removeToken()
+      userStore.setUserInfo({})
+      router.push('/login')
+      ElMessage.success('用户已退出')
+    }
+    catch {
+      ElMessage.warning('用户取消操作')
+    }
+    
   } else {
     router.push(`/user/${key}`)
   }
@@ -97,7 +113,7 @@ const handleCommand = (key) => {
       <el-main>
         <router-view></router-view>
       </el-main>
-      <el-footer>大事件 ©2023 Created by 黑马程序员</el-footer>
+      <el-footer>大事件 ©2026 Studied by Hpday</el-footer>
     </el-container>
   </el-container>
 </template>

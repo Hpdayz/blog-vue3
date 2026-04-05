@@ -20,12 +20,16 @@ export const useUserStore = defineStore(
       // console.log(res)
       userInfo.value = res.data.data
     }
+    const setUserInfo = (obj) => {
+      userInfo.value = obj
+    }
     return {
       token,
       setToken,
       removeToken,
       userInfo,
-      getUserInfo
+      getUserInfo,
+      setUserInfo
     }
   },
   { persist: true }
