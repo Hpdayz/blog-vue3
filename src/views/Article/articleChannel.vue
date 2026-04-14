@@ -1,8 +1,61 @@
+<script setup>
+import { articleGetChannels } from '@/api/article'
+import { ref } from 'vue'
+// 导入 Element 图标库
+import { Edit, Delete } from '@element-plus/icons-vue'
+// 设置 loading 效果
+const loading = ref(true)
+// 获取分类列表
+const channelList = ref([])
+const getChannelList = async () => {
+  const res = await articleGetChannels()
+  loading.value = false
+  channelList.value = res.data.data
+}
+getChannelList()
+// 表格的编辑按钮
+const handleEdit = (row, $index) => {
+  console.log(row, $index)
+}
+// 表格的删除操作
+const handleDelete = (row) => {
+  console.log(row)
+}
+</script>
+
 <template>
   <pageContainer title="文章分类" btnName="添加分类">
     <template #extra>
       <el-button type="primary">添加分类</el-button>
     </template>
-    我是主体内容
+    <el-table v-loading="loading" :data="channelList" stripe style="width: 100%">
+      <el-table-column type="index" label="序号" width="100"></el-table-column>
+      <el-table-column prop="cate_name" label="分类名称"></el-table-column>
+      <el-table-column prop="cate_alias" label="分类别名"></el-table-column>
+      <el-table-column label="操作" width="100">
+        <template #default="{ row, $index }">
+          <el-button
+            circle
+            plain
+            type="primary"
+            @click="handleEdit(row, $index)"
+            :icon="Edit"
+          ></el-button>
+          <el-button
+            circle
+            plain
+            type="danger"
+            @click="handleDelete(row)"
+            :icon="Delete"
+          ></el-button>
+        </template>
+      </el-table-column>
+      <template #empty>
+        <el-empty description="暂时没有数据" />
+      </template>
+    </el-table>
   </pageContainer>
 </template>
+<style scoped>
+
+</style>

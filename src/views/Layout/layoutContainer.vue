@@ -83,7 +83,7 @@ const handleCommand =async (key) => {
     <el-container>
       <el-header>
         <div>
-          程序员：<strong>{{
+          欢迎：<strong>{{
             userStore.userInfo.nickname || userStore.userInfo.username
           }}</strong>
         </div>
