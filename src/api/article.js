@@ -4,3 +4,13 @@ import request from '@/utils/request'
 export const articleGetChannels = () => {
   return request.get('/my/cate/list')
 }
+
+// 添加文章分类的接口
+export const articleAddChannels = (data) => {
+  return request.post('/my/cate/add', data)
+}
+
+// 更新/编辑 文章分类的接口
+export const articleEditChannels = (data) => {
+  return request.put('/my/cate/info', data)
+}

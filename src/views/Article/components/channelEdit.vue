@@ -1,4 +1,5 @@
 <script setup>
+import { articleAddChannels, articleEditChannels } from '@/api/article'
 import { ref } from 'vue'
 // 弹层的显示隐藏
 const dialogVisible = ref(false)
@@ -20,7 +21,7 @@ const rules = {
   cate_name: [
     { required: true, message: '请输入分类名称', trigger: 'blur' },
     {
-      pattern: /^\s{1,10}$/,
+      pattern: /^\S{1,10}$/,
       message: '分类名称必须是1-10位非空字符',
       trigger: 'blur'
     }
@@ -28,16 +29,42 @@ const rules = {
   cate_alias: [
     { required: true, message: '请输入分类名称', trigger: 'blur' },
     {
-      pattern: /^[a-zA-Z0-9]$/,
-      message: '分类名称必须是1-15位字母或数字',
+      pattern: /^[a-zA-Z0-9]{1,15}$/,
+      message: '分类别名必须是1-15位字母或数字',
       trigger: 'blur'
     }
   ]
 }
+// 提交表单数据
+const formRef = ref()
+const onSubmit = async () => {
+  // 1. 提交数据前预校验
+  await formRef.value.validate()
+  // 2. 提交数据
+  const isEdit = formData.value.id
+  if (isEdit) {
+    // 当前编辑分类操作
+    await articleEditChannels(formData.value)
+  } 
+  else {
+    // 当前是添加分类操作
+    await articleAddChannels(formData.value)
+  }
+  // 3. 关闭弹层
+  dialogVisible.value = false
+  // 4. 传信号给
+  emit('success')
+}
+/* 
+  关闭弹层后需要刷新 articleChannel 页面
+  当成功添加或编辑的之后，给父组件信号 $emit
+*/
+const emit = defineEmits(['success'])
 </script>
 <template>
   <el-dialog v-model="dialogVisible" :title="formData.id ? '编辑分类' : '添加分类'" width="500">
     <el-form
+      ref="formRef"
       :model="formData"
       :rules="rules"
       label-width="100px"
@@ -53,7 +80,7 @@ const rules = {
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">
+        <el-button type="primary" @click="onSubmit()">
           确认
         </el-button>
       </div>

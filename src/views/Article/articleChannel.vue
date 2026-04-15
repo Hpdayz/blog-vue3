@@ -31,6 +31,10 @@ const onAddChannel = () => {
   // 使用组件暴露出来的方法控制弹层显隐
   dialog.value.open({})
 }
+// 接收channelEdit 组件的 success 信号后重新获取 分类列表
+const onSuccess = () => {
+  getChannelList()
+}
 </script>
 
 <template>
@@ -70,7 +74,7 @@ const onAddChannel = () => {
       </template>
     </el-table>
 
-    <channelEdit ref="dialog"></channelEdit>
+    <channelEdit ref="dialog" @success="onSuccess"></channelEdit>
   </pageContainer>
 </template>
 <style scoped></style>
