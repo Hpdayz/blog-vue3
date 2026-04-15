@@ -14,3 +14,10 @@ export const articleAddChannels = (data) => {
 export const articleEditChannels = (data) => {
   return request.put('/my/cate/info', data)
 }
+
+// 删除文章分类的接口
+export const articleDelChannels = (id) => {
+  return request.delete('/my/cate/del', {
+    params: { id }
+  })
+}

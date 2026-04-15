@@ -1,10 +1,11 @@
 <script setup>
-import { articleGetChannels } from '@/api/article'
+import { articleDelChannels, articleGetChannels } from '@/api/article'
 import { ref } from 'vue'
 // 导入 channelEdit 组件
 import channelEdit from './components/channelEdit.vue'
 // 导入 Element 图标库
-import { Edit, Delete } from '@element-plus/icons-vue'
+import { Edit, Delete, Warning } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 // 设置 loading 效果
 const loading = ref(true)
 // 获取分类列表
@@ -22,7 +23,21 @@ const handleEdit = (row) => {
 }
 // 表格的删除操作
 const handleDelete = (row) => {
-  console.log(row)
+  // console.log(row)
+  ElMessageBox.confirm('是否确认删除该分类？', '温馨提示',{
+    type: Warning,
+    confirmButtonText: '确认',
+    cancelButtonText: '取消'
+  }).then(() => {
+    return articleDelChannels(row.id)
+  }).then(() => {
+    ElMessage.success('删除成功')
+    return getChannelList()
+  }).catch((err) => {
+    if(err !== 'cancel' && err !== 'close') {
+      ElMessage.error('删除失败')
+    }
+  })
 }
 // 获取 channelEdit组件
 const dialog = ref()

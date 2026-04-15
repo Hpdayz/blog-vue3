@@ -1,17 +1,21 @@
 <script setup>
 import { articleAddChannels, articleEditChannels } from '@/api/article'
+import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 // 弹层的显示隐藏
 const dialogVisible = ref(false)
 // 组件方法
-const open = (obj) => {
+const open = async (obj) => {
   // console.log(obj)
   formData.value = { ...obj }
+  formDataOpen.value = { ...obj }
   dialogVisible.value = true
 }
 defineExpose({
   open
 })
+// 记录open() 传递过来的数据
+const formDataOpen = ref({})
 // 表单数据
 const formData = ref({
   cate_name: '',
@@ -42,16 +46,22 @@ const onSubmit = async () => {
   await formRef.value.validate()
   // 2. 提交数据
   const isEdit = formData.value.id
+  const isChanged =
+  formData.value.cate_name !== formDataOpen.value.cate_name ||
+  formData.value.cate_alias !== formDataOpen.value.cate_alias
   if (isEdit) {
     // 当前编辑分类操作
-    await articleEditChannels(formData.value)
-  } 
-  else {
+    if (isChanged) {
+      await articleEditChannels(formData.value)
+      ElMessage.success('编辑成功')
+    }
+  } else {
     // 当前是添加分类操作
     await articleAddChannels(formData.value)
   }
   // 3. 关闭弹层
   dialogVisible.value = false
+  // ElMessage.success(isEdit ? '编辑成功' : '添加成功')
   // 4. 传信号给
   emit('success')
 }
@@ -62,7 +72,11 @@ const onSubmit = async () => {
 const emit = defineEmits(['success'])
 </script>
 <template>
-  <el-dialog v-model="dialogVisible" :title="formData.id ? '编辑分类' : '添加分类'" width="500">
+  <el-dialog
+    v-model="dialogVisible"
+    :title="formData.id ? '编辑分类' : '添加分类'"
+    width="500"
+  >
     <el-form
       ref="formRef"
       :model="formData"
@@ -80,9 +94,7 @@ const emit = defineEmits(['success'])
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="onSubmit()">
-          确认
-        </el-button>
+        <el-button type="primary" @click="onSubmit()"> 确认 </el-button>
       </div>
     </template>
   </el-dialog>
