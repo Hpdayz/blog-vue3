@@ -1,6 +1,8 @@
 <script setup>
 import { articleGetChannels } from '@/api/article'
 import { ref } from 'vue'
+// 导入 channelEdit 组件
+import channelEdit from './components/channelEdit.vue'
 // 导入 Element 图标库
 import { Edit, Delete } from '@element-plus/icons-vue'
 // 设置 loading 效果
@@ -14,18 +16,20 @@ const getChannelList = async () => {
 }
 getChannelList()
 // 表格的编辑按钮
-const handleEdit = (row, $index) => {
-  console.log(row, $index)
+const handleEdit = (row) => {
+  dialog.value.open(row)
+  // console.log(row)
 }
 // 表格的删除操作
 const handleDelete = (row) => {
   console.log(row)
 }
-// 弹层的显示隐藏
-const dialogVisible = ref(false)
+// 获取 channelEdit组件
+const dialog = ref()
 // 添加分类操作
 const onAddChannel = () => {
-  dialogVisible.value = true
+  // 使用组件暴露出来的方法控制弹层显隐
+  dialog.value.open({})
 }
 </script>
 
@@ -66,17 +70,7 @@ const onAddChannel = () => {
       </template>
     </el-table>
 
-    <el-dialog v-model="dialogVisible" title="标题" width="500">
-      <span>内容</span>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="dialogVisible = false">
-            确认
-          </el-button>
-        </div>
-      </template>
-    </el-dialog>
+    <channelEdit ref="dialog"></channelEdit>
   </pageContainer>
 </template>
 <style scoped></style>
