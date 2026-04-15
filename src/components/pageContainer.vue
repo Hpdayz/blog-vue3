@@ -3,10 +3,6 @@ defineProps({
   title: {
     type: String,
     required: true
-  },
-  btnName: {
-    type: String,
-    required: true
   }
 })
 </script>
@@ -16,10 +12,10 @@ defineProps({
     <template #header>
       <el-header class="header">
         <span>{{ title }}</span>
-        <el-button type="primary">{{ btnName }}</el-button>
+        <slot name="extra"></slot>
       </el-header>
     </template>
-      <slot>我是内容</slot>
+    <slot>我是内容</slot>
   </el-card>
 </template>
 

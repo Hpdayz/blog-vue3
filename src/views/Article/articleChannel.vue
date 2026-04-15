@@ -21,14 +21,25 @@ const handleEdit = (row, $index) => {
 const handleDelete = (row) => {
   console.log(row)
 }
+// 弹层的显示隐藏
+const dialogVisible = ref(false)
+// 添加分类操作
+const onAddChannel = () => {
+  dialogVisible.value = true
+}
 </script>
 
 <template>
-  <pageContainer title="文章分类" btnName="添加分类">
+  <pageContainer title="文章分类">
     <template #extra>
-      <el-button type="primary">添加分类</el-button>
+      <el-button type="primary" @click="onAddChannel()">添加分类</el-button>
     </template>
-    <el-table v-loading="loading" :data="channelList" stripe style="width: 100%">
+    <el-table
+      v-loading="loading"
+      :data="channelList"
+      stripe
+      style="width: 100%"
+    >
       <el-table-column type="index" label="序号" width="100"></el-table-column>
       <el-table-column prop="cate_name" label="分类名称"></el-table-column>
       <el-table-column prop="cate_alias" label="分类别名"></el-table-column>
@@ -54,8 +65,18 @@ const handleDelete = (row) => {
         <el-empty description="暂时没有数据" />
       </template>
     </el-table>
+
+    <el-dialog v-model="dialogVisible" title="标题" width="500">
+      <span>内容</span>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">
+            确认
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </pageContainer>
 </template>
-<style scoped>
-
-</style>
+<style scoped></style>
