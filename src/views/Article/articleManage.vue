@@ -1,6 +1,11 @@
 <script setup>
 import { Edit, Delete } from '@element-plus/icons-vue'
 import { ref } from 'vue'
+// 导入文章分类选择组件
+import channelSelect from './components/channelSelect.vue'
+// 表单数据
+const modelValue = ref('')
+
 // 表格的假数据
 const articleList = ref([
   {
@@ -36,10 +41,9 @@ const onDeleteArticle = (row) => {
     <!-- 表单区域 -->
     <el-form inline>
       <el-form-item label="文章分类" style="width: 200px">
-        <el-select>
-          <el-option label="书籍" value="101"></el-option>
-          <el-option label="游戏" value="102"></el-option>
-        </el-select>
+        <!-- Vue3 中 v-model => :modelValue 和 @update:modelValue -->
+        <!-- Vue3 => v-model:cid => :cid 和 @update:cid -->
+        <channelSelect v-model="modelValue"></channelSelect>
       </el-form-item>
       <el-form-item label="发布状态" style="width: 200px">
         <el-select>
@@ -56,7 +60,7 @@ const onDeleteArticle = (row) => {
     <el-table :data="articleList" style="width: 100%">
       <el-table-column label="文章标题">
         <template #default="{ row }">
-          <el-link type="primary" :underline="false">{{ row.title }}</el-link>   
+          <el-link type="primary" underline="never">{{ row.title }}</el-link>   
         </template>
       </el-table-column>
       <el-table-column label="分类" prop="cate_name"></el-table-column>
