@@ -36,13 +36,13 @@ const onDeleteArticle = (row) => {
     <!-- 表单区域 -->
     <el-form inline>
       <el-form-item label="文章分类" style="width: 200px">
-        <el-select placeholder="请选择分类">
+        <el-select>
           <el-option label="书籍" value="101"></el-option>
           <el-option label="游戏" value="102"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="发布状态" style="width: 200px">
-        <el-select placeholder="请选择状态">
+        <el-select>
           <el-option label="已发布" value="101"></el-option>
           <el-option label="草稿" value="102"></el-option>
         </el-select>
