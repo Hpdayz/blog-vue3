@@ -21,3 +21,10 @@ export const articleDelChannels = (id) => {
     params: { id }
   })
 }
+
+// 获取文章列表的接口
+export const articleGetList = (params) => {
+  return request.get('/my/article/list', {
+    params
+  })
+}

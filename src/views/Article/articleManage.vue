@@ -3,34 +3,35 @@ import { Edit, Delete } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 // 导入文章分类选择组件
 import channelSelect from './components/channelSelect.vue'
+import { articleGetList } from '@/api/article'
+// 导入时间格式化函数
+import { formatDate } from '@/utils/date'
 // 表单参数
 const params = ref({
-  pagenum: '',
-  pagesize: '',
+  pagenum: 1,
+  pagesize: '5',
   cate_id: '',
   state: ''
 })
 // const onTest = () => {
 //   console.log(params.value)
 // }
-
-// 表格的假数据
-const articleList = ref([
-  {
-    id: 5961,
-    title: '新的文章1',
-    pub_date: '2022-07-10 14:53:52.604',
-    state: '已发布',
-    cate_name: '体育'
-  },
-  {
-    id: 5962,
-    title: '新的文章2',
-    pub_date: '2022-07-10 14:54:30.904',
-    state: '草稿',
-    cate_name: '体育'
-  }
-])
+// 设置 loading 效果
+const loading = ref(true)
+// 总共获取几条数据
+const total = ref()
+// 获取表格数据
+const getArticleList = () => {
+  articleGetList(params.value).then((res) => {
+    articleList.value = res.data.data
+    articleList.value.forEach(item => item.pub_date = formatDate(item.pub_date))
+    total.value = res.data.total
+    loading.value = false
+  })
+}
+getArticleList()
+// 表格的数据
+const articleList = ref([])
 // 表格编辑操作
 const onEditArticle = (row) => {
   console.log(row)
@@ -66,10 +67,10 @@ const onDeleteArticle = (row) => {
       </el-form-item>
     </el-form>
     <!-- 表格区域 -->
-    <el-table :data="articleList" style="width: 100%">
+    <el-table :data="articleList" style="width: 100%" v-loading="loading">
       <el-table-column label="文章标题">
         <template #default="{ row }">
-          <el-link type="primary" underline="never">{{ row.title }}</el-link>   
+          <el-link type="primary" underline="never">{{ row.title }}</el-link>
         </template>
       </el-table-column>
       <el-table-column label="分类" prop="cate_name"></el-table-column>
