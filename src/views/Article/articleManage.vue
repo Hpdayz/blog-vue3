@@ -3,8 +3,16 @@ import { Edit, Delete } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 // 导入文章分类选择组件
 import channelSelect from './components/channelSelect.vue'
-// 表单数据
-const modelValue = ref('')
+// 表单参数
+const params = ref({
+  pagenum: '',
+  pagesize: '',
+  cate_id: '',
+  state: ''
+})
+// const onTest = () => {
+//   console.log(params.value)
+// }
 
 // 表格的假数据
 const articleList = ref([
@@ -43,17 +51,18 @@ const onDeleteArticle = (row) => {
       <el-form-item label="文章分类" style="width: 200px">
         <!-- Vue3 中 v-model => :modelValue 和 @update:modelValue -->
         <!-- Vue3 => v-model:cid => :cid 和 @update:cid -->
-        <channelSelect v-model="modelValue"></channelSelect>
+        <channelSelect v-model="params.cate_id"></channelSelect>
       </el-form-item>
       <el-form-item label="发布状态" style="width: 200px">
-        <el-select>
-          <el-option label="已发布" value="101"></el-option>
-          <el-option label="草稿" value="102"></el-option>
+        <el-select v-model="params.state">
+          <el-option label="已发布" value="已发布"></el-option>
+          <el-option label="草稿" value="草稿"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary">搜索</el-button>
         <el-button>重置</el-button>
+        <!-- <el-button @click="onTest">测试表单参数</el-button> -->
       </el-form-item>
     </el-form>
     <!-- 表格区域 -->
