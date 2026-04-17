@@ -9,7 +9,7 @@ import { formatDate } from '@/utils/date'
 // 表单参数
 const params = ref({
   pagenum: 1,
-  pagesize: '5',
+  pagesize: 2,
   cate_id: '',
   state: ''
 })
@@ -19,7 +19,7 @@ const params = ref({
 // 设置 loading 效果
 const loading = ref(true)
 // 总共获取几条数据
-const total = ref()
+const total = ref(0)
 // 获取表格数据
 const getArticleList = () => {
   articleGetList(params.value).then((res) => {
@@ -39,6 +39,20 @@ const onEditArticle = (row) => {
 // 表格的删除操作
 const onDeleteArticle = (row) => {
   console.log(row)
+}
+// 分页
+const onSizeChange = (size) => {
+  // 每页请求的数据发生变化
+  params.value.pagesize = size
+  // 当 pagesize 数据发生变化，当前页面的数据不会对齐，所以可以直接回到第一页
+  params.value.pagenum = 1
+  // 重新根据新的参数获取文章列表
+  getArticleList()
+}
+const onCurrentChange = (page) => {
+  // 请求的页数发生变化
+  params.value.pagenum = page
+  getArticleList()
 }
 </script>
 
@@ -95,5 +109,18 @@ const onDeleteArticle = (row) => {
         </template>
       </el-table-column>
     </el-table>
+    <!-- 分页区域 -->
+    <el-pagination
+      v-model:current-page="params.pagenum"
+      v-model:page-size="params.pagesize"
+      :page-sizes="[2,3,5,7]"
+      layout="jumper, total, sizes, prev, pager, next"
+      background
+      :total="total"
+      @size-change="onSizeChange"
+      @current-change="onCurrentChange"
+      style="margin-top: 20px; justify-content: flex-end;"
+    >
+    </el-pagination>
   </pageContainer>
 </template>
