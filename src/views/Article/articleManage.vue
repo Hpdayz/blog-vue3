@@ -16,6 +16,17 @@ const params = ref({
 // const onTest = () => {
 //   console.log(params.value)
 // }
+// 表单的搜索和重置
+const onSearch = () => {
+  params.value.pagenum = 1
+  getArticleList()
+}
+const onReset = () => {
+  params.value.pagenum = 1
+  params.value.cate_id = ''
+  params.value.state = ''
+  getArticleList()
+}
 // 设置 loading 效果
 const loading = ref(true)
 // 总共获取几条数据
@@ -75,8 +86,8 @@ const onCurrentChange = (page) => {
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">搜索</el-button>
-        <el-button>重置</el-button>
+        <el-button type="primary" @click="onSearch">搜索</el-button>
+        <el-button @click="onReset">重置</el-button>
         <!-- <el-button @click="onTest">测试表单参数</el-button> -->
       </el-form-item>
     </el-form>
