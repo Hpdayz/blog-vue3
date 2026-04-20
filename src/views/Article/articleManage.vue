@@ -3,6 +3,9 @@ import { Edit, Delete } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 // 导入文章分类选择组件
 import channelSelect from './components/channelSelect.vue'
+// 导入抽屉组件
+import articleEdit from './components/articleEdit.vue'
+// 导入获取文章列表接口
 import { articleGetList } from '@/api/article'
 // 导入时间格式化函数
 import { formatDate } from '@/utils/date'
@@ -43,9 +46,16 @@ const getArticleList = () => {
 getArticleList()
 // 表格的数据
 const articleList = ref([])
+// articleEdit 组件的 ref 对象
+const articleEditRef = ref()
+// 表格的添加操作
+const onAddArticle = () => {
+  articleEditRef.value.open({})
+}
 // 表格编辑操作
 const onEditArticle = (row) => {
-  console.log(row)
+  articleEditRef.value.open(row)
+  // console.log(row)
 }
 // 表格的删除操作
 const onDeleteArticle = (row) => {
@@ -70,7 +80,7 @@ const onCurrentChange = (page) => {
 <template>
   <pageContainer title="文章管理">
     <template #extra>
-      <el-button type="primary">添加文章</el-button>
+      <el-button type="primary" @click="onAddArticle">添加文章</el-button>
     </template>
     <!-- 表单区域 -->
     <el-form inline>
@@ -133,5 +143,8 @@ const onCurrentChange = (page) => {
       style="margin-top: 20px; justify-content: flex-end;"
     >
     </el-pagination>
+    <!-- 抽屉组件 -->
+     <!-- :modelValue & @update:modelValue -->
+    <articleEdit ref="articleEditRef"></articleEdit>
   </pageContainer>
 </template>
