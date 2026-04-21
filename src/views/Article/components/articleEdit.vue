@@ -1,6 +1,8 @@
 <script setup>
 // 导入文章分类选择组件
 import channelSelect from './channelSelect.vue'
+// 导入 Element Plus Icons
+import { Plus } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 // 抽屉组件
 const visibleDrawer = ref(false)
@@ -34,6 +36,17 @@ const defaultFormDate = ref({
 const formData = ref({
   ...defaultFormDate.value
 })
+
+// 文件上传相关
+// 图片数据 File 对象
+const imgUrl = ref('')
+const onUploadFile = (uploadFile) =>{
+  // console.log(uploadFile.raw)
+  imgUrl.value = URL.createObjectURL(uploadFile.raw)
+  // console.log(imgUrl.value)
+  // console.log(URL.createObjectURL(uploadFile.raw))
+  formData.value.cover_img = uploadFile.raw
+}
 </script>
 <template>
   <!-- 抽屉组件 -->
@@ -51,7 +64,17 @@ const formData = ref({
       <el-form-item label="文章分类">
         <channelSelect v-model="formData.cate_id" width="100%"></channelSelect>
       </el-form-item>
-      <el-form-item label="文章封面">文件上传</el-form-item>
+      <el-form-item label="文章封面">
+        <el-upload
+          class="avatar-uploader"
+          :auto-upload="false"
+          :show-file-list="true"
+          :on-change="onUploadFile"
+        >
+          <img v-if="imgUrl" :src="imgUrl" class="avatar" alt="这是一张图片">
+          <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+        </el-upload>
+      </el-form-item>
       <el-form-item label="文章内容">
         <div class="editor">富文本编辑器</div>
       </el-form-item>
@@ -62,3 +85,33 @@ const formData = ref({
     </el-form>
   </el-drawer>
 </template>
+
+<style lang="scss" scoped> 
+.avatar-uploader {
+  :deep() {
+    .avatar {
+      width: 178px;
+      height: 178px;
+      display: block;
+    }
+    .el-upload {
+      border: 1px dashed var(--el-border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: var(--el-transition-duration-fast);
+    }
+    .el-upload:hover {
+      border-color: var(--el-color-primary);
+    }
+    .el-icon.avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 178px;
+      height: 178px;
+      text-align: center;
+    }
+  }
+}
+</style>
