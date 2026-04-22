@@ -28,3 +28,8 @@ export const articleGetList = (params) => {
     params
   })
 }
+
+// 发布文章的接口 -> data 接收的参数为 application/form-data
+export const articlePublish = (data) => {
+  return request.post('/my/article/add', data)
+}

@@ -38,7 +38,9 @@ const total = ref(0)
 const getArticleList = () => {
   articleGetList(params.value).then((res) => {
     articleList.value = res.data.data
-    articleList.value.forEach(item => item.pub_date = formatDate(item.pub_date))
+    articleList.value.forEach(
+      (item) => (item.pub_date = formatDate(item.pub_date))
+    )
     total.value = res.data.total
     loading.value = false
   })
@@ -73,6 +75,16 @@ const onSizeChange = (size) => {
 const onCurrentChange = (page) => {
   // 请求的页数发生变化
   params.value.pagenum = page
+  getArticleList()
+}
+
+// articleEdit 组件发布成功的回调
+const onSuccess = (type) => {
+  if(type === 'add') {
+    // 添加
+    const lastPage = Math.ceil((total.value + 1) / params.value.pagesize)
+    params.value.pagenum = lastPage
+  }
   getArticleList()
 }
 </script>
@@ -134,17 +146,17 @@ const onCurrentChange = (page) => {
     <el-pagination
       v-model:current-page="params.pagenum"
       v-model:page-size="params.pagesize"
-      :page-sizes="[2,3,5,7]"
+      :page-sizes="[2, 3, 5, 7]"
       layout="jumper, total, sizes, prev, pager, next"
       background
       :total="total"
       @size-change="onSizeChange"
       @current-change="onCurrentChange"
-      style="margin-top: 20px; justify-content: flex-end;"
+      style="margin-top: 20px; justify-content: flex-end"
     >
     </el-pagination>
     <!-- 抽屉组件 -->
-     <!-- :modelValue & @update:modelValue -->
-    <articleEdit ref="articleEditRef"></articleEdit>
+    <!-- :modelValue & @update:modelValue -->
+    <articleEdit ref="articleEditRef" @success="onSuccess"></articleEdit>
   </pageContainer>
 </template>

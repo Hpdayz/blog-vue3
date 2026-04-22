@@ -1,5 +1,6 @@
 <script setup>
 // 导入文章分类选择组件
+import { articlePublish } from '@/api/article'
 import channelSelect from './channelSelect.vue'
 // 导入 Element Plus Icons
 import { Plus } from '@element-plus/icons-vue'
@@ -7,7 +8,8 @@ import { Plus } from '@element-plus/icons-vue'
 import { QuillEditor } from '@vueup/vue-quill' 
 // 导入 vue-quill 的样式
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
+import { ElMessage } from 'element-plus'
 // 抽屉组件
 const visibleDrawer = ref(false)
 // 组件暴露 open 方法
@@ -22,6 +24,9 @@ const open = (obj) => {
   else {
     // 添加操作
     formData.value = { ...defaultFormDate.value}
+    imgUrl.value = ''
+    // 等待 DOM 渲染完毕
+    nextTick(() => editorRef.value.setHTML(''))
     console.log('添加操作')
   }
 }
@@ -50,6 +55,29 @@ const onUploadFile = (uploadFile) =>{
   // console.log(imgUrl.value)
   // console.log(URL.createObjectURL(uploadFile.raw))
   formData.value.cover_img = uploadFile.raw
+}
+// 富文本编辑器对象
+const editorRef = ref()
+
+// 发布文章
+const emit = defineEmits(['success'])
+const onPublish = async (state) => {
+  formData.value.state = state
+  // 将 formData 转化为 FormData 对象
+  const fd = new FormData()
+  for(let key in formData.value) {
+    fd.append(key, formData.value[key])
+  }
+  if(formData.value.id) {
+    // 编辑操作
+  } 
+  else {
+    // 添加操作
+    await articlePublish(fd)
+    ElMessage.success('添加成功')
+    visibleDrawer.value = false
+    emit('success', 'add')
+  }
 }
 </script>
 <template>
@@ -87,13 +115,14 @@ const onUploadFile = (uploadFile) =>{
               theme="snow"
               v-model:content="formData.content"
               contene-type="html"
+              ref="editorRef"
             ></QuillEditor>
           </div>
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">发布</el-button>
-        <el-button type="info">草稿</el-button>
+        <el-button @click="onPublish('已发布')" type="primary">发布</el-button>
+        <el-button @click="onPublish('草稿')" type="info">草稿</el-button>
       </el-form-item>
     </el-form>
   </el-drawer>
