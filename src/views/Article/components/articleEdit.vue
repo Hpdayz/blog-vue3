@@ -3,6 +3,10 @@
 import channelSelect from './channelSelect.vue'
 // 导入 Element Plus Icons
 import { Plus } from '@element-plus/icons-vue'
+// 注册 Vue-quill 组件
+import { QuillEditor } from '@vueup/vue-quill' 
+// 导入 vue-quill 的样式
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import { ref } from 'vue'
 // 抽屉组件
 const visibleDrawer = ref(false)
@@ -76,7 +80,16 @@ const onUploadFile = (uploadFile) =>{
         </el-upload>
       </el-form-item>
       <el-form-item label="文章内容">
-        <div class="editor">富文本编辑器</div>
+        <div class="editor">
+          <!-- 使用 vue-quill -->
+          <div class="editor">
+            <QuillEditor
+              theme="snow"
+              v-model:content="formData.content"
+              contene-type="html"
+            ></QuillEditor>
+          </div>
+        </div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary">发布</el-button>
@@ -112,6 +125,12 @@ const onUploadFile = (uploadFile) =>{
       height: 178px;
       text-align: center;
     }
+  }
+}
+.editor {
+  width: 100%;
+  :deep(.ql-editor) {
+    min-height: 200px
   }
 }
 </style>
