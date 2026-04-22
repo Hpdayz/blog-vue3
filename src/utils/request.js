@@ -41,3 +41,5 @@ instance.interceptors.response.use(
 )
 // 5. 导出 axios 实例
 export default instance
+// 按需导出
+export { baseURL }
