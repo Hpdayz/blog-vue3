@@ -47,7 +47,7 @@ const handleCommand =async (key) => {
       <div class="el-aside__logo"></div>
       <el-menu
         active-text-color="#ffd04b"
-        background-color="#0d0c50"
+        background-color="91a8a5"
         :default-active="$route.path"
         text-color="#fff"
         router
@@ -122,10 +122,10 @@ const handleCommand =async (key) => {
 .layout-container {
   height: 100vh;
   .el-aside {
-    background-color: #0d0c50;
+    background-color: #91a8a5;
     &__logo {
-      height: 120px;
-      background: url('@/assets/logo3.png') no-repeat center / 120px auto;
+      height: 100px;
+      background: url('@/assets/bg3.png') no-repeat center / 100% auto;
     }
     .el-menu {
       border-right: none;
