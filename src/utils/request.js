@@ -4,6 +4,7 @@ import router from '@/router/index'
 import { ElMessage } from 'element-plus'
 // 1. 项目基地址
 const baseURL = 'http://big-event-vue-api-t.itheima.net'
+// const baseURL = 'http://localhost:5000'
 // 2. 创建 axios 实例
 const instance = axios.create({
   baseURL,

@@ -43,5 +43,5 @@ export const articleGetDetail = (id) => {
 
 // 编辑文章（更新）接口 put 请求 Body 参数 application/form-data
 export const articleEdit = (data) => {
-  return request.put('my/article/info', data) 
+  return request.put('my/article/info', data)
 }
